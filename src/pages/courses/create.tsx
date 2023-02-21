@@ -1,18 +1,74 @@
-import React from 'react'
+import React, { SyntheticEvent, useState, useEffect } from 'react'
 import { BackButton } from '@/commons/BackButton'
+import { withPageAuthRequired } from '@auth0/nextjs-auth0/client';
+import { useForm } from '@/hooks/useForm';
+import { useFetchDataOnTrigger } from '@/hooks/useFetchDataOnTrigger';
+import { RotatingLines } from 'react-loader-spinner';
+import { MdArrowBack } from 'react-icons/md';
+import { SuccessActionMessage } from '@/components/SuccessActionMessage';
+import { ErrorActionMessage } from '@/components/ErrorActionMessage';
 
 const CreateCourse = () => {
+    const { formRef, getFormInfo } = useForm()
+    const {isError, isLoading, isSuccess, fireUp, restartFetch} = useFetchDataOnTrigger('POST', '/courses')
+    const [showSuccessMessage, setShowSuccessMessage] = useState(false)
+    const [showErrorMessage, setShowErrorMessage] = useState(false)
+
+    useEffect(()=>{
+        if(isSuccess){
+            window.scrollTo({top:0, behavior:'smooth'})
+            setShowSuccessMessage(true)
+            setShowErrorMessage(false)
+        }
+        if(isError){
+            window.scrollTo({top:0, behavior:'smooth'})
+            setShowErrorMessage(true)
+        }
+    }, [isSuccess, isError])
+
+    const handleSubmit = (e:SyntheticEvent) => {
+        const [jsonData] = getFormInfo(e)
+        fireUp(jsonData)
+    }
+
+    const handleSuccessMessage = () => {
+        restartFetch()
+        formRef.current?.reset()
+        setShowSuccessMessage(false)
+    }
+
+    const toggleSuccessMessage = () => {setShowSuccessMessage(!showSuccessMessage)}
+    const toggleErrorMessage = () => {setShowErrorMessage(!showErrorMessage)}
+    const handleInputFocus = () => {
+        setShowErrorMessage(false)
+        setShowSuccessMessage(false)
+    }
+    
+
   return (
     <div className='p-5'>
         <div><BackButton /></div>
+        <SuccessActionMessage 
+            show={showSuccessMessage} 
+            toggler={toggleSuccessMessage} 
+            buttonText='limpiar y crear otro'
+            text='Curso Creado con Éxito'
+            title='¡Perfecto!' 
+            handleClick={handleSuccessMessage} 
+            />
+        <ErrorActionMessage
+            show={showErrorMessage}
+            toggler={toggleErrorMessage} 
+            handleClick={toggleErrorMessage}
+        />
         <h3 className="text-2xl my-3 mb-10 font-medium text-gray-800 dark:text-white">Create New Course</h3>
-        <form className="w-full max-w-lg">
+        <form ref={formRef} className="w-full max-w-lg" onSubmit={handleSubmit}>
             <div className="flex flex-wrap -mx-3 mb-6">
                 <div className="w-full md:w-1/2 px-3">
                 <label className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" htmlFor="grid-last-name">
                     Name
                 </label>
-                <input className="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500" id="grid-last-name" type="text" placeholder="My Course Name" />
+                <input name="name" disabled={isSuccess || isLoading} className="disabled:opacity-50 appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500" id="grid-last-name" type="text" placeholder="My Course Name" />
                 </div>
             </div>
             <div className="flex flex-wrap -mx-3 mb-6">
@@ -20,13 +76,14 @@ const CreateCourse = () => {
                 <label className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" htmlFor="grid-password">
                     Description
                 </label>
-                <textarea className="appearance-none block w-full min-h-[100px] bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white focus:border-gray-500" id="grid-password" placeholder="My course Description" />
+                <textarea name="description" disabled={isSuccess || isLoading} className="disabled:opacity-50 appearance-none block w-full min-h-[100px] bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white focus:border-gray-500" id="grid-password" placeholder="My course Description" />
                 {/* <p className="text-gray-600 text-xs italic">Make it as long and as crazy as you had like</p> */}
                 </div>
             </div>
-            <div>
-                <button type='submit' className='bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded'>
-                    crear
+            <div className='flex gap-2'>
+                <button type='submit' disabled={isLoading || isSuccess} className='transition-all relative disabled:bg-blue-400  bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded'>
+                    { !isLoading && 'crear' }
+                    <RotatingLines visible={isLoading} width='50' strokeColor='white' />
                 </button>
             </div>
         </form>
@@ -34,7 +91,7 @@ const CreateCourse = () => {
   )
 }
 
-export default CreateCourse
+export default withPageAuthRequired(CreateCourse)
 
 
 

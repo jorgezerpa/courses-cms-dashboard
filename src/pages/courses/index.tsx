@@ -1,18 +1,14 @@
+import React, { useEffect } from 'react'
 import { CourseRow } from '@/components/courses/CourseRow'
 import { CourseTableHead } from '@/components/courses/CourseTableHead'
 import { useRouter } from 'next/router'
-import React from 'react'
-
-const TableRow = () => (
-    <tr className='border-b-2 border-gray-200'>
-      <td className='px-10 py-5'>The Sliding Mr. Bones (Next Stop, Pottersville)</td>
-      <td className='px-10 py-5'>Malcolm Lockyer</td>
-      <td className='px-10 py-5'>1961</td>
-    </tr>
-)
+import { withPageAuthRequired } from '@auth0/nextjs-auth0/client';
+import { useFetchData } from '@/hooks/useFetchData'
+import { routes } from '@/utils/mainApiRoutes';
 
 const Courses = () => {
   const router = useRouter()
+  const { isError, isLoading, isSuccess, result } = useFetchData('GET', routes.getCourses() )
 
   return (
     <section className="container px-4 mx-auto pt-10">
@@ -44,9 +40,9 @@ const Courses = () => {
             <table className=" min-w-full divide-y divide-gray-200 dark:divide-gray-700">
               <CourseTableHead />
               <tbody className="bg-white divide-y divide-gray-200 dark:divide-gray-700 dark:bg-gray-900">
-                  <CourseRow />
-                  <CourseRow />
-                  <CourseRow />
+                  {isSuccess && result.courses.map((course:any)=>(
+                      <CourseRow key={course.id} course={course} />
+                  ))}
               </tbody>
             </table>
           </div>
@@ -57,4 +53,4 @@ const Courses = () => {
   )
 }
 
-export default Courses
+export default withPageAuthRequired(Courses)

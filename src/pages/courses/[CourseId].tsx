@@ -1,40 +1,23 @@
-import React from 'react'
+import React, { SyntheticEvent, useState, useEffect } from 'react'
 import { BackButton } from '@/commons/BackButton'
+import { withPageAuthRequired } from '@auth0/nextjs-auth0/client';
+import { useForm } from '@/hooks/useForm';
+import { RotatingLines } from 'react-loader-spinner';
+import { useFetchData } from '@/hooks/useFetchData';
+import { routes } from '@/utils/mainApiRoutes';
+import router from 'next/router';
+import { EditCourseForm } from '@/components/courses/EditCourseForm';
 
-const CreateCourse = () => {
+const CourseDetail = () => {
   return (
     <div className='p-5'>
-        <div><BackButton /></div>
-        <h3 className="text-2xl my-3 mb-10 font-medium text-gray-800 dark:text-white">Edit Course</h3>
-        <form className="w-full max-w-lg">
-            <div className="flex flex-wrap -mx-3 mb-6">
-                <div className="w-full md:w-1/2 px-3">
-                <label className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" htmlFor="grid-last-name">
-                    Name
-                </label>
-                <input className="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500" id="grid-last-name" type="text" placeholder="My Course Name" />
-                </div>
-            </div>
-            <div className="flex flex-wrap -mx-3 mb-6">
-                <div className="w-full px-3">
-                <label className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" htmlFor="grid-password">
-                    Description
-                </label>
-                <textarea className="appearance-none block w-full min-h-[100px] bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white focus:border-gray-500" id="grid-password" placeholder="My course Description" />
-                {/* <p className="text-gray-600 text-xs italic">Make it as long and as crazy as you had like</p> */}
-                </div>
-            </div>
-            <div>
-                <button type='submit' className='bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded'>
-                    editar
-                </button>
-            </div>
-        </form>
+        <BackButton />
+        <EditCourseForm />
     </div>
   )
 }
 
-export default CreateCourse
+export default withPageAuthRequired(CourseDetail)
 
 
 
@@ -79,3 +62,6 @@ export default CreateCourse
     <input className="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500" id="grid-zip" type="text" placeholder="90210" />
     </div>
 </div> */}
+
+
+

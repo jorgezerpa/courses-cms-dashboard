@@ -1,50 +1,32 @@
-import React, { useState } from 'react'
 import { useRouter } from 'next/router'
+import React, { useState } from 'react'
+import { ConfirmDeleteModal } from '../ConfirmDeleteModal'
 
-const ItemOptions = ({id}:{id:number|string}) => {
+export const CourseRow = ({ course }:{ course:any }) => {
   const router = useRouter()
-
-  return(
-    <div id="dropdown" className="z-10 bg-white divide-y divide-gray-100 rounded-lg shadow shadow-gray-500 dark:bg-gray-700">
-        <ul className="py-2 px-3 text-sm text-gray-700 dark:text-gray-200" >
-          <li className='text-left' onClick={()=>router.push(`/courses/${id}/sections`)}>
-            <div className="block py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Ver secciones</div>
-          </li>
-          <li className='text-left' onClick={()=>router.push(`/courses/${id}/edit`)}>
-            <div className="block py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Editar</div>
-          </li>
-          <li className='text-left'>
-            <div className="block py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Eliminar</div>
-          </li>
-        </ul>
-    </div>  
-  )
-
-}
-
-export const CourseRow = () => {
   const [showItemOptions, setShowItemOptions] = useState(false)
-  const router = useRouter()
+  const [showDeleteModal, setShowDeleteModal] = useState(false)
 
+  const toggleDeleteModal = () => setShowDeleteModal(!showDeleteModal)
   const toggleItemOptions = () => setShowItemOptions(!showItemOptions)
 
   return (
     <tr>
       <td className="px-4 py-4 text-sm font-medium whitespace-nowrap">
         <div>
-          <h2 className="font-medium text-gray-800 dark:text-white ">Circooles</h2>
+          <h2 className="font-medium text-gray-800 dark:text-white ">{ course.name }</h2>
           {/* <p className="text-sm font-normal text-gray-600 dark:text-gray-400">getcirooles.com</p> */}
         </div>
       </td>
       <td className="px-12 py-4 text-sm font-medium whitespace-nowrap">
         <div className="inline px-3 py-1 text-sm font-normal text-gray-500 bg-gray-100 rounded-full dark:text-gray-400 gap-x-2 dark:bg-gray-800">
-          Churned
+          active
         </div>
       </td>
       <td className="px-4 py-4 text-sm whitespace-nowrap">
         <div>
-          <h4 className="text-gray-700 dark:text-gray-200">Design software</h4>
-          <p className="text-gray-500 dark:text-gray-400">Super lightweight design app</p>
+          <h4 className="text-gray-700 dark:text-gray-200">Category</h4>
+          <p className="text-gray-500 dark:text-gray-400 max-w-[200px] text-ellipsis overflow-hidden">{course.description}</p>
         </div>
       </td>
       
@@ -54,9 +36,21 @@ export const CourseRow = () => {
             <path strokeLinecap="round" strokeLinejoin="round" d="M12 6.75a.75.75 0 110-1.5.75.75 0 010 1.5zM12 12.75a.75.75 0 110-1.5.75.75 0 010 1.5zM12 18.75a.75.75 0 110-1.5.75.75 0 010 1.5z" />
           </svg>
           <div className={`top-0 right-[90%] absolute ${showItemOptions?'block':'hidden'}`}>
-            <ItemOptions id="1" />
+              <div id="dropdown" className="z-10 bg-white divide-y divide-gray-100 rounded-lg shadow shadow-gray-500 dark:bg-gray-700">
+                <ul className="py-2 px-3 text-sm text-gray-700 dark:text-gray-200" >
+                  <li className='text-left' onClick={()=>router.push(`/courses/${course.id}`)}>
+                    <div className="block py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Detalles</div>
+                  </li>
+                  <li className='text-left'>
+                    <div onClick={toggleDeleteModal} className="block py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Eliminar</div>
+                  </li>
+                </ul>
+              </div>  
           </div>
         </button>
+      </td>
+      <td>
+        <ConfirmDeleteModal show={showDeleteModal} toggler={toggleDeleteModal} elementId={course.id} />
       </td>
     </tr>
   )
