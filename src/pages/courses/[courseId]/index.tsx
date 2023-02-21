@@ -2,12 +2,17 @@ import React, { SyntheticEvent, useState, useEffect } from 'react'
 import { BackButton } from '@/commons/BackButton'
 import { withPageAuthRequired } from '@auth0/nextjs-auth0/client';
 import { EditCourseForm } from '@/components/courses/EditCourseForm';
+import { useRouter } from 'next/router';
+import { Sections } from '@/components/sections/Sections';
 
 const CourseDetail = () => {
+    const router = useRouter()
+
   return (
     <div className='p-5'>
         <BackButton />
         <EditCourseForm />
+        <Sections courseId={router.query.courseId as string} />
     </div>
   )
 }

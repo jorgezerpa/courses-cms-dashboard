@@ -8,10 +8,10 @@ import { useFetchDataOnTrigger } from '@/hooks/useFetchDataOnTrigger'
 import { SuccessActionMessage } from '../SuccessActionMessage'
 import { ErrorActionMessage } from '../ErrorActionMessage'
 
-export const EditCourseForm = () => {
+export const EditSectionForm = () => {
     const { formRef, getFormInfo } = useForm()
-    const { isError, isLoading, isSuccess, result:course, refetch } = useFetchData('GET', routes.getCourse(router.query.courseId as String) )
-    const {isError:isErrorOnUpdate, isLoading:isLoadingOnUpdate, isSuccess:isSuccessOnUpdate, fireUp, restartFetch} = useFetchDataOnTrigger('PATCH', routes.updateCourse(router.query.courseId as String)) 
+    const { isError, isLoading, isSuccess, result:section, refetch } = useFetchData('GET', routes.getSection(router.query.sectionId as string) )
+    const {isError:isErrorOnUpdate, isLoading:isLoadingOnUpdate, isSuccess:isSuccessOnUpdate, fireUp, restartFetch} = useFetchDataOnTrigger('PATCH', routes.updateSection(router.query.sectionId as string)) 
     const [initialFormValues, setInitialFormValues] = useState<any>({})
     const [currentFormValues, setCurrentFormValues] = useState<any>({})
     const [wasChanged, setWasChanged] = useState(false)
@@ -20,15 +20,15 @@ export const EditCourseForm = () => {
     useEffect(()=>{ // set form states
         if(isSuccess){
             setInitialFormValues({
-                name:course.name,
-                description:course.description
+                name:section.name,
+                description:section.description
             })
             setCurrentFormValues({
-                name:course.name,
-                description:course.description
+                name:section.name,
+                description:section.description
             })
         }
-    }, [isSuccess, course])
+    }, [isSuccess, section])
 
     useEffect(()=>{ // handle form changes
         let wasChanged = false
@@ -84,10 +84,10 @@ export const EditCourseForm = () => {
         { (!isLoading && isSuccess) && (
             <form ref={formRef} className="w-full max-w-lg" onSubmit={handleSubmit}>
                 <div className="flex flex-wrap -mx-3 mb-6">
-                    <EditableField triggerUndo={undo} name='name' defaultValue={course.name} type='text' setCurrentValue={handleChange}   />
+                    <EditableField triggerUndo={undo} name='name' defaultValue={section.name} type='text' setCurrentValue={handleChange}   />
                 </div>
                 <div className="flex flex-wrap -mx-3 mb-6">
-                    <EditableField triggerUndo={undo} name='description' defaultValue={course.description} type='textarea' setCurrentValue={handleChange}  />
+                    <EditableField triggerUndo={undo} name='description' defaultValue={section.description} type='textarea' setCurrentValue={handleChange}  />
                 </div>
                 <div className={`${ wasChanged ? 'flex' : 'hidden' } gap-2`}>
                     <button type='submit' className='transition-all relative disabled:bg-blue-400  bg-blue-500 hover:bg-blue-700 text-white font-semibold py-1 px-2 text-sm rounded'>

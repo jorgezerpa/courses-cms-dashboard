@@ -2,7 +2,7 @@ import { useRouter } from 'next/router'
 import React, { useState } from 'react'
 import { ConfirmDeleteModal } from '../ConfirmDeleteModal'
 
-export const CourseRow = ({ course }:{ course:any }) => {
+export const LessonRow = ({ lesson }:{ lesson:any }) => {
   const router = useRouter()
   const [showItemOptions, setShowItemOptions] = useState(false)
   const [showDeleteModal, setShowDeleteModal] = useState(false)
@@ -14,7 +14,7 @@ export const CourseRow = ({ course }:{ course:any }) => {
     <tr>
       <td className="px-4 py-4 text-sm font-medium whitespace-nowrap">
         <div>
-          <h2 className="font-medium text-gray-800 dark:text-white ">{ course.name }</h2>
+          <h2 className="font-medium text-gray-800 dark:text-white ">{ lesson.title }</h2>
           {/* <p className="text-sm font-normal text-gray-600 dark:text-gray-400">getcirooles.com</p> */}
         </div>
       </td>
@@ -25,7 +25,7 @@ export const CourseRow = ({ course }:{ course:any }) => {
       </td>
       <td className="px-4 py-4 text-sm whitespace-nowrap">
         <div>
-          <p className="text-gray-500 dark:text-gray-400 max-w-[200px] text-ellipsis overflow-hidden">{course.description}</p>
+          <p className="text-gray-500 dark:text-gray-400 max-w-[200px] text-ellipsis overflow-hidden">{lesson.description || '---'}</p>
         </div>
       </td>
       
@@ -37,7 +37,7 @@ export const CourseRow = ({ course }:{ course:any }) => {
           <div className={`top-0 right-[90%] absolute ${showItemOptions?'block':'hidden'}`}>
               <div id="dropdown" className="z-10 bg-white divide-y divide-gray-100 rounded-lg shadow shadow-gray-500 dark:bg-gray-700">
                 <ul className="py-2 px-3 text-sm text-gray-700 dark:text-gray-200" >
-                  <li className='text-left' onClick={()=>router.push(`/courses/${course.id}`)}>
+                  <li className='text-left' onClick={()=>router.push(`/courses/${router.query.courseId}/sections/${router.query.sectionId}/lessons/${lesson.id}`)}>
                     <div className="block py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Detalles</div>
                   </li>
                   <li className='text-left'>
@@ -49,7 +49,7 @@ export const CourseRow = ({ course }:{ course:any }) => {
         </button>
       </td>
       <td>
-        <ConfirmDeleteModal show={showDeleteModal} toggler={toggleDeleteModal} elementId={course.id} />
+        <ConfirmDeleteModal show={showDeleteModal} toggler={toggleDeleteModal} elementId={lesson.id} />
       </td>
     </tr>
   )
