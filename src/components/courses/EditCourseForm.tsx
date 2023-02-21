@@ -16,16 +16,19 @@ export const EditCourseForm = () => {
     const [currentFormValues, setCurrentFormValues] = useState<any>({})
     const [wasChanged, setWasChanged] = useState(false)
     const [undo, setUndo] = useState(false)
+    console.log(currentFormValues)
 
     useEffect(()=>{ // set form states
         if(isSuccess){
             setInitialFormValues({
                 name:course.name,
-                description:course.description
+                description:course.description,
+                status:course.status
             })
             setCurrentFormValues({
                 name:course.name,
-                description:course.description
+                description:course.description,
+                status:course.status
             })
         }
     }, [isSuccess, course])
@@ -83,8 +86,13 @@ export const EditCourseForm = () => {
         />
         { (!isLoading && isSuccess) && (
             <form ref={formRef} className="w-full max-w-lg" onSubmit={handleSubmit}>
-                <div className="flex flex-wrap -mx-3 mb-6">
-                    <EditableField triggerUndo={undo} name='name' defaultValue={course.name} type='text' setCurrentValue={handleChange}   />
+                <div className='flex items-center gap-16'>
+                    <div className="flex flex-wrap -mx-3 mb-6">
+                        <EditableField triggerUndo={undo} name='name' defaultValue={course.name} type='text' setCurrentValue={handleChange}   />
+                    </div>
+                    <div className="flex flex-wrap -mx-3 mb-6">
+                        <EditableField triggerUndo={undo} name='status' defaultValue={course.status} type='select' setCurrentValue={handleChange}   />
+                    </div>
                 </div>
                 <div className="flex flex-wrap -mx-3 mb-6">
                     <EditableField triggerUndo={undo} name='description' defaultValue={course.description} type='textarea' setCurrentValue={handleChange}  />

@@ -19,8 +19,8 @@ export const CourseRow = ({ course }:{ course:any }) => {
         </div>
       </td>
       <td className="px-12 py-4 text-sm font-medium whitespace-nowrap">
-        <div className="inline px-3 py-1 text-sm font-normal text-gray-500 bg-gray-100 rounded-full dark:text-gray-400 gap-x-2 dark:bg-gray-800">
-          active
+        <div className={`${course.status==='published'?'bg-green-600 text-white':'bg-gray-100'} font-normal inline px-3 py-1 text-sm text-gray-500 rounded-full dark:text-gray-400 gap-x-2 dark:bg-gray-800`}>
+          { course.status }
         </div>
       </td>
       <td className="px-4 py-4 text-sm whitespace-nowrap">
