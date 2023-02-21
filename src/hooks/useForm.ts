@@ -6,7 +6,7 @@ const useForm = () => {
     const formRef = useRef<HTMLFormElement>(null)
 
     const getFormInfo = (e:SyntheticEvent):getFormInfoType => {
-        e.preventDefault()
+        e.preventDefault() // this is the only reason to pass the event as params
         const formData = new FormData(formRef.current as HTMLFormElement)
         let jsonData:any= {}
         formData.forEach((value, key)=>jsonData[key]=value)

@@ -7,6 +7,20 @@ export const useFetchData = (method:string, url:string, params?:any, body?:any) 
     const [isLoading, setIsLoading] = useState<boolean>(true)
     const [isError, setIsError] = useState<boolean>(false)
     const [result, setResult] = useState<null|any>(null)
+    const [triggerRefetch, setTriggerRefetch] = useState(false) // value is not important, just toggle true-false to fireup the refetch (this is on the useEffect dependencies)
+
+    const restart = () => { // should reestart before refetch 
+        setIsSuccess(false)
+        setIsLoading(true)
+        setIsError(false)
+        setResult(null)
+    }
+
+    const refetch = () => {
+        restart()
+        setTriggerRefetch(!triggerRefetch)
+    }
+
 
     useEffect(() => {
         (async()=>{
@@ -40,12 +54,13 @@ export const useFetchData = (method:string, url:string, params?:any, body?:any) 
                 console.log(error)
             }
         })()      
-    }, [])
+    }, [triggerRefetch])
     
     return {
         isError,
         isLoading,
         isSuccess,
         result,
+        refetch,
     }
 }

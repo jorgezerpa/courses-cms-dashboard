@@ -4,14 +4,18 @@ import { useForm } from '@/hooks/useForm'
 import { routes } from '@/utils/mainApiRoutes'
 import router from 'next/router'
 import { EditableField } from '../EditableField'
+import { useFetchDataOnTrigger } from '@/hooks/useFetchDataOnTrigger'
+import { SuccessActionMessage } from '../SuccessActionMessage'
+import { ErrorActionMessage } from '../ErrorActionMessage'
 
 export const EditCourseForm = () => {
     const { formRef, getFormInfo } = useForm()
-    const { isError, isLoading, isSuccess, result:course } = useFetchData('GET', routes.getCourse(router.query.CourseId as String) )
-    // const {isError, isLoading, isSuccess, fireUp, restartFetch} = useFetchDataOnTrigger('POST', '/courses') 
+    const { isError, isLoading, isSuccess, result:course, refetch } = useFetchData('GET', routes.getCourse(router.query.CourseId as String) )
+    const {isError:isErrorOnUpdate, isLoading:isLoadingOnUpdate, isSuccess:isSuccessOnUpdate, fireUp, restartFetch} = useFetchDataOnTrigger('PATCH', routes.updateCourse(router.query.CourseId as String)) 
     const [initialFormValues, setInitialFormValues] = useState<any>({})
     const [currentFormValues, setCurrentFormValues] = useState<any>({})
     const [wasChanged, setWasChanged] = useState(false)
+    const [undo, setUndo] = useState(false)
 
     useEffect(()=>{ // set form states
         if(isSuccess){
@@ -37,6 +41,12 @@ export const EditCourseForm = () => {
         setWasChanged(wasChanged)
     },[currentFormValues, initialFormValues])
 
+    useEffect(()=>{
+        if(isSuccessOnUpdate){
+            refetch()
+        }
+    }, [isSuccessOnUpdate])
+
 
     const handleChange = (name:string, value:string) => {
         // update current values and trigger effect
@@ -46,21 +56,44 @@ export const EditCourseForm = () => {
         setCurrentFormValues(newValues)
     }
 
+    const handleSubmit = (e:SyntheticEvent) => {
+        const [ body ] = getFormInfo(e) // tuple -> [json, formData]
+        fireUp(body)
+    }
+
+    const handleUndo = () => {
+        setUndo(!undo)
+        setCurrentFormValues(initialFormValues)
+    }
+
   return (
     <section className=''>
+        <SuccessActionMessage 
+            show={isSuccessOnUpdate} 
+            toggler={restartFetch} // in this case, this will set isSuccessOnUpdate to false, so, it is no needed build a new state or a function handler 
+            buttonText='entendido'
+            title='¡Perfecto!' 
+            text='Curso Actualizado con Éxito'
+            handleClick={restartFetch} 
+            />
+        <ErrorActionMessage
+            show={isErrorOnUpdate}
+            toggler={restartFetch} 
+            handleClick={restartFetch}
+        />
         { (!isLoading && isSuccess) && (
-            <form ref={formRef} className="w-full max-w-lg">
+            <form ref={formRef} className="w-full max-w-lg" onSubmit={handleSubmit}>
                 <div className="flex flex-wrap -mx-3 mb-6">
-                    <EditableField name='name' defaultValue={course.name} type='text' setCurrentValue={handleChange}   />
+                    <EditableField triggerUndo={undo} name='name' defaultValue={course.name} type='text' setCurrentValue={handleChange}   />
                 </div>
                 <div className="flex flex-wrap -mx-3 mb-6">
-                    <EditableField name='description' defaultValue={course.description} type='textarea' setCurrentValue={handleChange}  />
+                    <EditableField triggerUndo={undo} name='description' defaultValue={course.description} type='textarea' setCurrentValue={handleChange}  />
                 </div>
                 <div className={`${ wasChanged ? 'flex' : 'hidden' } gap-2`}>
                     <button type='submit' className='transition-all relative disabled:bg-blue-400  bg-blue-500 hover:bg-blue-700 text-white font-semibold py-1 px-2 text-sm rounded'>
                         guardar cambios
                     </button>
-                    <button type='button' className='transition-all relative disabled:bg-red-400  bg-red-500 hover:bg-red-700 text-white font-semibold py-1 px-2 text-sm rounded'>
+                    <button onClick={handleUndo} type='button' className='transition-all relative disabled:bg-red-400  bg-red-500 hover:bg-red-700 text-white font-semibold py-1 px-2 text-sm rounded'>
                         deshacer
                     </button>
                 </div>

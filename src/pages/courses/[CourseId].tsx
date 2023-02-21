@@ -1,11 +1,6 @@
 import React, { SyntheticEvent, useState, useEffect } from 'react'
 import { BackButton } from '@/commons/BackButton'
 import { withPageAuthRequired } from '@auth0/nextjs-auth0/client';
-import { useForm } from '@/hooks/useForm';
-import { RotatingLines } from 'react-loader-spinner';
-import { useFetchData } from '@/hooks/useFetchData';
-import { routes } from '@/utils/mainApiRoutes';
-import router from 'next/router';
 import { EditCourseForm } from '@/components/courses/EditCourseForm';
 
 const CourseDetail = () => {

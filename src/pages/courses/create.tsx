@@ -4,7 +4,6 @@ import { withPageAuthRequired } from '@auth0/nextjs-auth0/client';
 import { useForm } from '@/hooks/useForm';
 import { useFetchDataOnTrigger } from '@/hooks/useFetchDataOnTrigger';
 import { RotatingLines } from 'react-loader-spinner';
-import { MdArrowBack } from 'react-icons/md';
 import { SuccessActionMessage } from '@/components/SuccessActionMessage';
 import { ErrorActionMessage } from '@/components/ErrorActionMessage';
 

@@ -16,6 +16,8 @@ export const useFetchDataOnTrigger = (method:string, url:string) => {
     const [params, setParams] = useState({})
     const [trigger, setTrigger] = useState(false)
 
+    //call this function to set all values as initial
+    // for example -> when query was made successfully, execute this to set all as initial and make another query (or get ready for it)
     const restartFetch = () => {
         setIsSuccess(false)
         setIsLoading(false)
