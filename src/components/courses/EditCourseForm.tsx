@@ -16,7 +16,6 @@ export const EditCourseForm = () => {
     const [currentFormValues, setCurrentFormValues] = useState<any>({})
     const [wasChanged, setWasChanged] = useState(false)
     const [undo, setUndo] = useState(false)
-    console.log(currentFormValues)
 
     useEffect(()=>{ // set form states
         if(isSuccess){

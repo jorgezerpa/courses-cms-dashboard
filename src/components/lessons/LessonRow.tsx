@@ -49,7 +49,7 @@ export const LessonRow = ({ lesson }:{ lesson:any }) => {
         </button>
       </td>
       <td>
-        <ConfirmDeleteModal show={showDeleteModal} toggler={toggleDeleteModal} elementId={lesson.id} />
+        <ConfirmDeleteModal endpoint='lesson' show={showDeleteModal} toggler={toggleDeleteModal} elementId={lesson.id} />
       </td>
     </tr>
   )

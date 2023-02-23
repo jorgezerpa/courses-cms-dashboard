@@ -49,7 +49,7 @@ export const SectionRow = ({ section }:{ section:any }) => {
         </button>
       </td>
       <td>
-        <ConfirmDeleteModal show={showDeleteModal} toggler={toggleDeleteModal} elementId={section.id} />
+        <ConfirmDeleteModal endpoint='section' show={showDeleteModal} toggler={toggleDeleteModal} elementId={section.id} />
       </td>
     </tr>
   )

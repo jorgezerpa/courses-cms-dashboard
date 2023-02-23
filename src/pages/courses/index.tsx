@@ -5,6 +5,7 @@ import { useRouter } from 'next/router'
 import { withPageAuthRequired } from '@auth0/nextjs-auth0/client';
 import { useFetchData } from '@/hooks/useFetchData'
 import { routes } from '@/utils/mainApiRoutes';
+import { ThreeDots } from 'react-loader-spinner'
 
 const Courses = () => {
   const router = useRouter()
@@ -16,8 +17,10 @@ const Courses = () => {
     <div className="sm:flex sm:items-center sm:justify-between">
       <div>
         <div className="flex items-center gap-x-3">
-          <h2 className="text-lg font-medium text-gray-800 dark:text-white">Courses</h2>
-          <span className="px-3 py-1 text-xs text-blue-600 bg-blue-100 rounded-full dark:bg-gray-800 dark:text-blue-400">240 vendors</span>
+          <h2 className="text-3xl font-bold text-gray-800 dark:text-white">Courses</h2>
+          <span className="px-3 py-1 text-xs text-blue-600 bg-blue-100 rounded-full dark:bg-gray-800 dark:text-blue-400">
+            { isSuccess ? result.courses.length +' vendors' : <ThreeDots color='#3B82F6' width={20} height={20} /> }
+          </span>
         </div>
         <p className="mt-1 text-sm text-gray-500 dark:text-gray-300">Some beauty test that you feel good.</p>
       </div>

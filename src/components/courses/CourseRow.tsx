@@ -1,3 +1,4 @@
+import { routes } from '@/utils/mainApiRoutes'
 import { useRouter } from 'next/router'
 import React, { useState } from 'react'
 import { ConfirmDeleteModal } from '../ConfirmDeleteModal'
@@ -49,7 +50,7 @@ export const CourseRow = ({ course }:{ course:any }) => {
         </button>
       </td>
       <td>
-        <ConfirmDeleteModal show={showDeleteModal} toggler={toggleDeleteModal} elementId={course.id} />
+        <ConfirmDeleteModal endpoint='course' show={showDeleteModal} toggler={toggleDeleteModal} elementId={course.id} />
       </td>
     </tr>
   )

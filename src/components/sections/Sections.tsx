@@ -10,7 +10,6 @@ import { SectionRow } from './SectionRow';
 export const Sections = ({ courseId }:{courseId:string}) => {
   const router = useRouter()
   const { isError, isLoading, isSuccess, result } = useFetchData('GET', routes.getSections(courseId) )
-  console.log(courseId)
 
 
   return (
