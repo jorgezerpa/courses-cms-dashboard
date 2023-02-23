@@ -10,8 +10,8 @@ import { ErrorActionMessage } from '../ErrorActionMessage'
 
 export const EditLessonForm = () => {
     const { formRef, getFormInfo } = useForm()
-    const { isError, isLoading, isSuccess, result:lesson, refetch } = useFetchData('GET', routes.getSection(router.query.sectionId as string) )
-    const {isError:isErrorOnUpdate, isLoading:isLoadingOnUpdate, isSuccess:isSuccessOnUpdate, fireUp, restartFetch} = useFetchDataOnTrigger('PATCH', routes.updateSection(router.query.sectionId as string)) 
+    const { isError, isLoading, isSuccess, result:lesson, refetch } = useFetchData('GET', routes.getLesson(router.query.lessonId as string) )
+    const {isError:isErrorOnUpdate, isLoading:isLoadingOnUpdate, isSuccess:isSuccessOnUpdate, fireUp, restartFetch} = useFetchDataOnTrigger('PATCH', routes.updateLesson(router.query.lessonId as string)) 
     const [initialFormValues, setInitialFormValues] = useState<any>({})
     const [currentFormValues, setCurrentFormValues] = useState<any>({})
     const [wasChanged, setWasChanged] = useState(false)
@@ -20,11 +20,11 @@ export const EditLessonForm = () => {
     useEffect(()=>{ // set form states
         if(isSuccess){
             setInitialFormValues({
-                name:lesson.name,
+                name:lesson.title,
                 description:lesson.description
             })
             setCurrentFormValues({
-                name:lesson.name,
+                name:lesson.title,
                 description:lesson.description
             })
         }
@@ -84,7 +84,7 @@ export const EditLessonForm = () => {
         { (!isLoading && isSuccess) && (
             <form ref={formRef} className="w-full max-w-lg" onSubmit={handleSubmit}>
                 <div className="flex flex-wrap -mx-3 mb-6">
-                    <EditableField triggerUndo={undo} name='name' defaultValue={lesson.name} type='text' setCurrentValue={handleChange}   />
+                    <EditableField triggerUndo={undo} name='title' defaultValue={lesson.title} type='text' setCurrentValue={handleChange}   />
                 </div>
                 <div className="flex flex-wrap -mx-3 mb-6">
                     <EditableField triggerUndo={undo} name='description' defaultValue={lesson.description} type='textarea' setCurrentValue={handleChange}  />

@@ -16,6 +16,8 @@ export const routes = {
     
     createLesson:(sectionId:string)=>`${BASE_URL}/lessons/${sectionId}`,
     getLessons:(sectionId:string)=>`${BASE_URL}/lessons/${sectionId}`,
+    getLesson:(sectionId:string)=>`${BASE_URL}/lessons/get-lesson/${sectionId}`,
+    updateLesson:(sectionId:string)=>`${BASE_URL}/lessons/${sectionId}`,
     deleteLesson:(lessonId:string)=>`${BASE_URL}/lessons/${lessonId}`,
     
     
