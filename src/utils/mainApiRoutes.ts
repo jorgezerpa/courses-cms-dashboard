@@ -19,6 +19,7 @@ export const routes = {
     getLesson:(sectionId:string)=>`${BASE_URL}/lessons/get-lesson/${sectionId}`,
     updateLesson:(sectionId:string)=>`${BASE_URL}/lessons/${sectionId}`,
     deleteLesson:(lessonId:string)=>`${BASE_URL}/lessons/${lessonId}`,
+    addVideoToLesson:(lessonId:string)=>`${BASE_URL}/lessons/assets/addVideo/${lessonId}`,
     
     
 }
